@@ -53,8 +53,12 @@ def main(argv=None):
             print penny_num, rgb
             colors.append(rgb)
 
-    pixels = np.array([row + [[0] * 3] * (10 - len(row)) for row in chunks(colors, 10)])
-    plt.imshow(pixels / 255, interpolation='nearest')
+    ROW_SIZE = 10
+    pixels = np.array([row + [[0] * 3] * (ROW_SIZE - len(row)) for row in chunks(colors, ROW_SIZE)])
+    plt.imshow(pixels / 255, interpolation='nearest', extent=(0, ROW_SIZE, 0, len(pixels)))
+    plt.xticks(np.arange(1, ROW_SIZE), [])
+    plt.yticks(np.arange(1, len(pixels)), [])
+    plt.grid(color='black', linestyle='-', linewidth=8)
     plt.title('Anti-CSI zoom-enhancing')
 
     plt.show()
