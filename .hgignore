@@ -1,0 +1,6 @@
+syntax: glob
+*.pyc
+*cache
+*.sublime*
+desktop.ini
+.dropbox
