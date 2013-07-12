@@ -51,23 +51,28 @@ def histogram_average(h):
     rgb = [sum(h[color] * np.arange(256))/sum(h[color]) for color in 'RGB']
     return rgb
 
+def get_colors(csv_file):
+    colors = []
+    for penny_id, penny_hist in sorted(get_histograms(csv_file).iteritems()):
+        rgb = histogram_average(penny_hist)
+        rgb = [int(round(val)) for val in rgb]
+        colors.append(rgb)
+    return colors
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    parser = argparse.ArgumentParser(description='Show an image and capture '
-        'clicks specifying circular regions (3-point method)')
-    parser.add_argument('image', type=str, help='Input image')
+    parser = argparse.ArgumentParser(description='Takes a generated '
+        'histogram data set and averages the colors.')
+    parser.add_argument('image', type=str, help='Image filename used to '
+        'generate histograms (not actually read)')
 
     args = parser.parse_args(argv)
 
     histogram_file_in = args.image + '_hist.csv'
 
-    colors = []
-    for penny_id, penny_hist in sorted(get_histograms(histogram_file_in).iteritems()):
-        rgb = histogram_average(penny_hist)
-        rgb = [int(round(val)) for val in rgb]
-        colors.append(rgb)
+    colors = get_colors(histogram_file_in)
 
     ROW_SIZE = 10
     pixels = np.array([row + [[0] * 3] * (ROW_SIZE - len(row)) for row in chunks(colors, ROW_SIZE)])

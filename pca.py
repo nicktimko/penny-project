@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# from http://stackoverflow.com/a/2629704/194586
 """ a small class for Principal Component Analysis
 Usage:
     p = PCA( A, fraction=0.90 )

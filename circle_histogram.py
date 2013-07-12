@@ -18,9 +18,12 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    parser = argparse.ArgumentParser(description='Show an image and capture '
-        'clicks specifying circular regions (3-point method)')
-    parser.add_argument('image', type=str, help='Input image')
+    parser = argparse.ArgumentParser(description='Uses defined circular '
+        'regions to make masks then histograms the pixels.  Writes three '
+        'rows (red, green blue) for each region.')
+    parser.add_argument('image', type=str, help='Input image.  Region data '
+        'file is assumed to have the same name with a bonus "_hist.csv" '
+        'extension')
 
     args = parser.parse_args(argv)
 
