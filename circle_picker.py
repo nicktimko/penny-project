@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- encoding: utf-8 -*-
 '''..
-   circlepicker.py
+   circle_picker.py
 .. moduleauthor:: Nick Timkovich <ntimkovich@u.northwestern.edu>
 
 Generates circular masks from an image by having the user click three points 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- encoding: utf-8 -*-
 '''..
-   circlehistogram.py
+   circle_histogram.py
 .. moduleauthor:: Nick Timkovich <ntimkovich@u.northwestern.edu>
 
 Uses defined circular regions to make masks then histograms the pixels.  
