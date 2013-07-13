@@ -13,7 +13,7 @@ import sys
 import argparse
 
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 import penny_reconstructor as penny_r
 import pca
@@ -34,7 +34,11 @@ def main(argv=None):
     p = pca.PCA(colors, fraction=1)
 
     import pdb;pdb.set_trace()
-    print p
+    #print p
+    fig, ax = plt.subplots()
+    pc = p.pc()
+    ax.plot(pc.T[0], pc.T[1], 'o')
+    plt.show()
 
 if __name__ == '__main__':
     sys.exit(main())
