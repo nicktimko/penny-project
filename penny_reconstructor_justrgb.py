@@ -13,6 +13,7 @@ import csv
 import itertools
 
 import numpy as np
+#import matplotlib.pyplot as plt
 
 # from http://docs.python.org/2/library/itertools.html#recipes
 def grouper(n, iterable, fillvalue=None):
@@ -50,17 +51,16 @@ def histogram_average(h):
     rgb = [sum(h[color] * np.arange(256))/sum(h[color]) for color in 'RGB']
     return rgb
 
-def get_colors(csv_file):
+def get_colors(csv_file, round_=True):
     colors = []
     for penny_id, penny_hist in sorted(get_histograms(csv_file).iteritems()):
         rgb = histogram_average(penny_hist)
-        rgb = [int(round(val)) for val in rgb]
+        if round_:
+            rgb = [int(round(val)) for val in rgb]
         colors.append(rgb)
     return colors
 
 def main(argv=None):
-    import matplotlib.pyplot as plt
-    
     if argv is None:
         argv = sys.argv[1:]
 
@@ -72,18 +72,14 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     histogram_file_in = args.image + '_hist.csv'
+    rgb_file_out = args.image + '_rgb.csv'
 
-    colors = get_colors(histogram_file_in)
-
-    ROW_SIZE = 10
-    pixels = np.array([row + [[0] * 3] * (ROW_SIZE - len(row)) for row in chunks(colors, ROW_SIZE)])
-    plt.imshow(pixels / 255, interpolation='nearest', extent=(0, ROW_SIZE, 0, len(pixels)))
-    plt.xticks(np.arange(1, ROW_SIZE), [])
-    plt.yticks(np.arange(1, len(pixels)), [])
-    plt.grid(color='black', linestyle='-', linewidth=8)
-    plt.title('Anti-CSI zoom-enhancing')
-
-    plt.show()
+    colors = get_colors(histogram_file_in, round_=False)
+    
+    with open(rgb_file_out, 'wb') as f:
+        rgbcsv = csv.writer(f)
+        for i, color in enumerate(colors):
+            rgbcsv.writerow([i + 1] + color)	
 
 if __name__ == '__main__':
     sys.exit(main())
