@@ -50,11 +50,12 @@ def histogram_average(h):
     rgb = [sum(h[color] * np.arange(256))/sum(h[color]) for color in 'RGB']
     return rgb
 
-def get_colors(csv_file):
+def get_colors(csv_file, rounded=True):
     colors = []
     for penny_id, penny_hist in sorted(get_histograms(csv_file).iteritems()):
         rgb = histogram_average(penny_hist)
-        rgb = [int(round(val)) for val in rgb]
+        if rounded:
+            rgb = [int(round(val)) for val in rgb]
         colors.append(rgb)
     return colors
 
