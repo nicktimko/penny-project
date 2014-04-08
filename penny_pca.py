@@ -14,10 +14,12 @@ import argparse
 
 import numpy as np
 import scipy.stats as sps
+import scipy.optimize as spo
 import matplotlib.pyplot as plt
 
 import penny_reconstructor as penny_r
 import pca
+import skew
 
 def main(argv=None):
     if argv is None:
@@ -78,6 +80,25 @@ def main(argv=None):
     ax.set_title('Penny Color Space')
     ax.set_xlabel('PC1 (1 unit = {} RGB units, of 255)'.format(', '.join('{:0.3f}'.format(v) for v in pcao.Vt[0])))
     ax.set_ylabel('PC2 (1 unit = {} RGB units, of 255)'.format(', '.join('{:0.3f}'.format(v) for v in pcao.Vt[1])))
+    
+    f2, ax2 = plt.subplots()
+    pc1 = penny_pc.T[0]
+    ax2.hist(pc1, bins=10, normed=True)
+    norm_mean, norm_sd = sps.norm.fit(pc1)
+    x = np.linspace(norm_mean - 4*norm_sd, norm_mean + 4*norm_sd, 100)
+    y = sps.norm.pdf(x, norm_mean, norm_sd)
+    ax2.autoscale(False, axis='x')
+    ax2.plot(x, y, color='red', lw=5)
+    ax2.set_title('Penny PC1 color distribution')
+    ax2.set_xlabel('PC1')
+    ax2.set_ylabel('Frequency')
+
+    #print 'norm: ', sps.kstest(pc1, lambda x: sps.norm.cdf(x, *sps.norm.fit(pc1)))
+
+    #spo.leastsq(lambda p, x: skew.skew(x, *p) - pc1, [0.5]*3, ())
+    #print 'norm: ', sps.kstest(pc1, lambda x: sps.norm.cdf(x, *sps.norm.fit(pc1)))
+    #print 'norm: ', sps.kstest(pc1, lambda x: sps.norm.cdf(x, *sps.norm.fit(pc1)))
+
     plt.show()
 
 if __name__ == '__main__':
