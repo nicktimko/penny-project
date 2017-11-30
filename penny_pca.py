@@ -15,6 +15,8 @@ import argparse
 import numpy as np
 import scipy.stats as sps
 import scipy.optimize as spo
+import matplotlib
+matplotlib.use('agg') # headless
 import matplotlib.pyplot as plt
 
 import penny_reconstructor as penny_r
@@ -99,7 +101,9 @@ def main(argv=None):
     #print 'norm: ', sps.kstest(pc1, lambda x: sps.norm.cdf(x, *sps.norm.fit(pc1)))
     #print 'norm: ', sps.kstest(pc1, lambda x: sps.norm.cdf(x, *sps.norm.fit(pc1)))
 
-    plt.show()
+    fig.savefig('fig.png')
+    f2.savefig('fig2.png')
+    #plt.show()
 
 if __name__ == '__main__':
     sys.exit(main())
